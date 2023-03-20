@@ -11,15 +11,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.bds_mobile.MainActivity;
-import com.example.bds_mobile.R;
 import com.example.bds_mobile.api.APIClient;
 import com.example.bds_mobile.api.APIInterface;
 import com.example.bds_mobile.databinding.ActivitySignInBinding;
 import com.example.bds_mobile.model.Token;
 
-import java.io.Console;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,26 +33,25 @@ public class SignInActivity extends AppCompatActivity {
     private void setListeners(){
         binding.textCreateNewAccount.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), SignUpActivity.class)));
-//        binding.buttonSignIn.setOnClickListener(v -> {
-//            if (isValidSignInDetails()){
-//                signIn();
-//            }
-//        });
-        binding.buttonSignIn.setOnClickListener(v -> signIn());
+        binding.buttonSignIn.setOnClickListener(v -> {
+            if (isValidSignInDetails()){
+                signIn();
+            }
+        });
     }
 
     private void signIn(){
         loading(true);
         APIInterface apiInterface = APIClient.getRetrofitInstance().create(APIInterface.class);
-//        Call<ResponseBody> call = apiInterface.loginUser(binding.inputEmail.getText().toString().trim(),binding.inputPassword.getText().toString().trim());
-        Call<Token> call = apiInterface.loginUser("anhht2","123123");
+        Call<Token> call = apiInterface.loginUser(binding.inputEmail.getText().toString().trim(),binding.inputPassword.getText().toString().trim());
         call.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
                 if(response.isSuccessful()){
                     showToast("Login successfully");
-                    System.out.println("hello "+response.body());
-                    Log.i(TAG, "onResponse: "+ response.body());
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    intent.putExtra("access_token", response.body().getAccessToken());
+                    startActivity(intent);
                 }else {
                     loading(false);
                     showToast("Unable to sign in");
@@ -85,7 +80,7 @@ public class SignInActivity extends AppCompatActivity {
     }
     private Boolean isValidSignInDetails(){
         if(binding.inputEmail.getText().toString().trim().isEmpty()){
-            showToast("Enter email");
+            showToast("Enter username");
             return false;
         }else if(binding.inputPassword.getText().toString().trim().isEmpty()){
             showToast("Enter password");
