@@ -50,6 +50,7 @@ public class SignInActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     showToast("Login successfully");
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    intent.putExtra("username", binding.inputEmail.getText().toString().trim());
                     intent.putExtra("access_token", response.body().getAccessToken());
                     startActivity(intent);
                 }else {
@@ -78,6 +79,7 @@ public class SignInActivity extends AppCompatActivity {
     private void showToast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
+
     private Boolean isValidSignInDetails(){
         if(binding.inputEmail.getText().toString().trim().isEmpty()){
             showToast("Enter username");

@@ -1,6 +1,8 @@
 package com.example.bds_mobile.model;
 
-public class Post {
+import java.io.Serializable;
+
+public class Post implements Serializable {
     private Long postId;
     private String postTitle;
     private String description;

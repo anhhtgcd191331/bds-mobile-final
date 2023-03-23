@@ -99,7 +99,7 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
             android:background="@color/white"
-            android:src="@drawable/ic_border" />
+            android:src="@drawable/ic_like" />
 
         <ImageButton
             android:id="@+id/imageComment"
